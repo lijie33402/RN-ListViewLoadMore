@@ -13,7 +13,6 @@ import holderImage from '../../localSource/images/tree.png'
 import NavigationBar from '../common/NavBarCommon.js'
 import backIcon from '../../localSource/images/back.png'
 import ProductDetailContainer from '../containers/ProductDetailContainer.js'
-
 const {height, width} = Dimensions.get('window');
 
 class ProductImageShow extends Component {
@@ -46,9 +45,7 @@ class ProductImageShow extends Component {
 		if(navigator) {
 			navigator.push({
 			    component: ProductDetailContainer,
-			    params: {
-			    	rowData
-			    }
+			    rowData: rowData
 			});
 		}
 	}

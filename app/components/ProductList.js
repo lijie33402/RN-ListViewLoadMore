@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import {
 	View,
@@ -11,18 +10,15 @@ import {
 	RefreshControl,
 } from 'react-native'
 import { request } from '../util/Http.js'
-import reducer from '../reducers/rootReducer.js'
 import LoadMoreFooter from '../components/LoadMoreFooter.js'
 import ProductCell from '../components/ProductCell.js'
 import NavigationBar from '../common/NavBarCommon.js'
-import {
-	getProductList,
-	changeProductListRefreshing,
-	changeProductListLoadingMore
-} from '../action/product.js';
-// import ProductDetailContainer from '../containers/ProductDetailContainer.js'
 import ProductImageContainer from '../containers/ProductImageContainer.js'
 import backIcon from '../../localSource/images/back.png'
+
+import HttpRequest from '../util/Http.js'
+const HOST = 'https://m.alibaba.com/products/'
+const keyWords = 't-shirt'
 
 const { width, height } = Dimensions.get('window')
 
@@ -36,7 +32,28 @@ class ProductList extends Component {
 	}
 
 	componentDidMount() {
-		this.props.dispatch(getProductList(_pageNo));		
+		const {actions} = this.props;
+		actions.changeProductListRefreshing(true);
+		this.requestProductList(_pageNo);
+	}
+
+	requestProductList(pageNo) {
+		const {actions} = this.props;
+		return HttpRequest(`${HOST}${keyWords}/${pageNo}.html?XPJAX=1`)
+			.then((responseData) => {
+				actions.gotProductList(responseData,pageNo);
+				console.log(`---------> ,成功加载${responseData.productNormalList.length}条数据`);
+				if (pageNo === 1) {
+					actions.changeProductListRefreshing(false);
+				}else{
+					actions.changeProductListLoadingMore(false);
+				}
+			})
+			.catch((error) => {
+				actions.changeProductListRefreshing(false);
+				actions.changeProductListLoadingMore(false);
+				console.log("error",error);
+			});
 	}
 
 	_goToDetail(rowData) {
@@ -46,9 +63,7 @@ class ProductList extends Component {
 		if(navigator) {
 			navigator.push({
 			    component: ProductImageContainer,
-			    params: {
-			    	rowData
-			    }
+			    rowData: rowData
 			})
 		}
 	}
@@ -58,14 +73,16 @@ class ProductList extends Component {
 	}
 
 	_onRefresh() {
-		this.props.dispatch(getProductList(1));
+		const {actions} = this.props;
+		actions.changeProductListRefreshing(true);
+		this.requestProductList(_pageNo);
 	}
 
 	_loadMoreData() {
-		const { reducer, dispatch } = this.props;
-		dispatch(changeProductListLoadingMore(true));
+		const { reducer, actions } = this.props;
+		actions.changeProductListLoadingMore(true);
 		_pageNo = Number.parseInt(reducer.products.length / _pageSize) + 1;
-		dispatch(getProductList(_pageNo));
+		this.requestProductList(_pageNo);
 	}
 
 	_toEnd() {
@@ -85,8 +102,23 @@ class ProductList extends Component {
 		console.log("点击leftnav ");
 	}
 
-	render() {
+	_renderFooter() {
 		const { reducer } = this.props;
+		//通过当前product数量和刷新状态（是否正在下拉刷新）来判断footer的显示
+		if (reducer.products.length < 1 || reducer.isRefreshing) {
+			return null
+		};
+		if (reducer.products.length < reducer.totalProductCount) {
+			//还有更多，默认显示‘正在加载更多...’
+			return <LoadMoreFooter />
+		}else{
+			// 加载全部
+			return <LoadMoreFooter isLoadAll={true}/>
+		}
+	}
+
+	render() {
+		const { reducer, actions } = this.props;
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		return (
 			<View>
@@ -110,20 +142,7 @@ class ProductList extends Component {
 		)
 	}
 
-	_renderFooter() {
-		const { reducer } = this.props;
-		//通过当前product数量和刷新状态（是否正在下拉刷新）来判断footer的显示
-		if (reducer.products.length < 1 || reducer.isRefreshing) {
-			return null
-		};
-		if (reducer.products.length < reducer.totalProductCount) {
-			//还有更多，默认显示‘正在加载更多...’
-			return <LoadMoreFooter />
-		}else{
-			// 加载全部
-			return <LoadMoreFooter isLoadAll={true}/>
-		}
-	}
+	
 
 }
 
