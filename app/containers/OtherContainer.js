@@ -1,7 +1,7 @@
 import React, {
 	Component,
 } from 'react'
-import { Text } from 'react-native'
+import { View, Text } from 'react-native'
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux';
 import * as Actions from '../action/product.js';
@@ -14,7 +14,9 @@ class OtherContainer extends Component {
 
 	render() {
 		return (
-			<Text>其他</Text>
+			<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+				<Text>其他</Text>
+			</View>			
 		);
 	}
 }

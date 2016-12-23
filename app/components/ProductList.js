@@ -37,7 +37,7 @@ class ProductList extends Component {
 		this.requestProductList(_pageNo);
 	}
 
-	requestProductList(pageNo) {
+	requestProductList = (pageNo) => {
 		const {actions} = this.props;
 		return HttpRequest(`${HOST}${keyWords}/${pageNo}.html?XPJAX=1`)
 			.then((responseData) => {
@@ -56,7 +56,7 @@ class ProductList extends Component {
 			});
 	}
 
-	_goToDetail(rowData) {
+	_goToDetail = (rowData) => {
 		const { navigator } = this.props;
 		const imageUrl = `https:${rowData.imagePath}`;
 		console.log("去商品详情页",rowData);
@@ -68,24 +68,24 @@ class ProductList extends Component {
 		}
 	}
 
-	_renderRow(rowData,SectionId,rowID) {
-		return <ProductCell rowData={rowData} rowID={ rowID } goToDetail={ this._goToDetail.bind(this) }/>
+	_renderRow = (rowData,SectionId,rowID) => {
+		return <ProductCell rowData={rowData} rowID={ rowID } goToDetail={ this._goToDetail }/>
 	}
 
-	_onRefresh() {
+	_onRefresh = () => {
 		const {actions} = this.props;
 		actions.changeProductListRefreshing(true);
 		this.requestProductList(_pageNo);
 	}
 
-	_loadMoreData() {
+	_loadMoreData = () => {
 		const { reducer, actions } = this.props;
 		actions.changeProductListLoadingMore(true);
 		_pageNo = Number.parseInt(reducer.products.length / _pageSize) + 1;
 		this.requestProductList(_pageNo);
 	}
 
-	_toEnd() {
+	_toEnd = () => {
 		const { reducer } = this.props;
 		console.log("加载更多？ ",reducer.isLoadingMore, reducer.products.length, reducer.totalProductCount,reducer.isRefreshing);
 		//ListView滚动到底部，根据是否正在加载更多 是否正在刷新 是否已加载全部来判断是否执行加载更多
@@ -98,11 +98,11 @@ class ProductList extends Component {
 		});
 	}
 
-	_leftAction() {
+	_leftAction = () => {
 		console.log("点击leftnav ");
 	}
 
-	_renderFooter() {
+	_renderFooter = () => {
 		const { reducer } = this.props;
 		//通过当前product数量和刷新状态（是否正在下拉刷新）来判断footer的显示
 		if (reducer.products.length < 1 || reducer.isRefreshing) {
@@ -125,15 +125,15 @@ class ProductList extends Component {
 				<NavigationBar title={'首页'}/>
 				<ListView style={ styles.listViewContent } 
 					dataSource={ ds.cloneWithRows(reducer.products) } 
-					renderRow={ this._renderRow.bind(this) }
-					onEndReached={ this._toEnd.bind(this) }
+					renderRow={ this._renderRow }
+					onEndReached={ this._toEnd }
 					onEndReachedThreshold={10}
-					renderFooter={ this._renderFooter.bind(this) }
+					renderFooter={ this._renderFooter }
 					enableEmptySections={true} 
 					refreshControl={
 						<RefreshControl
 							refreshing={ reducer.isRefreshing }
-							onRefresh={ this._onRefresh.bind(this) }
+							onRefresh={ this._onRefresh }
 							tintColor="gray"
 							colors={['#ff0000', '#00ff00', '#0000ff']}
 							progressBackgroundColor="gray"/>

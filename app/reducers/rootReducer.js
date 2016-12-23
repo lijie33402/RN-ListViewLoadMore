@@ -6,6 +6,7 @@ const initialState = {
     products: [],
     isRefreshing: false,
     isLoadingMore: false,
+    selectedTab: 'home',
     totalProductCount: 200  //由服务端返回 这里临时指定一个值设置为上限
 };
 
@@ -34,6 +35,11 @@ function reducer(state = initialState, action) {
         console.log("正在加载更多么？",action.isLoadingMore);
             newState = Object.assign({}, state, {
                 isLoadingMore: action.isLoadingMore
+            });
+            return newState;
+        case ActionTypes.CHANGE_TABBAR:
+            newState = Object.assign({}, state, {
+                selectedTab: action.selectedTab
             });
             return newState;
         default:

@@ -25,4 +25,11 @@ export function changeProductListLoadingMore(isLoadingMore) {
 	}
 }
 
+export function changeTabbar (selectedTab) {
+	return {
+		type: ActionTypes.CHANGE_TABBAR,
+		selectedTab: selectedTab
+	}
+}
+
 

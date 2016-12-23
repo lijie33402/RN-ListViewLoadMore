@@ -17,28 +17,29 @@ import * as Actions from '../action/product.js';
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selectedTab: 'home'
-        }
     }
-
+    _changeTabbar = (tab) => {
+        const {actions} = this.props;
+        actions.changeTabbar(tab);
+    }
     render() {
+        const { selectedTab } = this.props.reducer;
         return (
             <TabNavigator tabBarStyle={{ backgroundColor:'white' }} style={{backgroundColor: 'white'}}>
                 <TabNavigator.Item
                     title="主页"
-                    selected={this.state.selectedTab === 'home'}
+                    selected={selectedTab === 'home'}
                     renderIcon={() => <Icon name={ 'ios-home' } size={30} color={'gray'}/>}
                     renderSelectedIcon={() => <Icon name={ 'ios-home' } size={30} color={'#4E78E7'}/>}
-                    onPress={() => this.setState({ selectedTab: 'home' })}>
+                    onPress={() => this._changeTabbar('home')}>
                     <ProductListContainer {...this.props} />
                  </TabNavigator.Item>
                  <TabNavigator.Item
                     title="其他"
-                    selected={this.state.selectedTab === 'other'}
+                    selected={selectedTab === 'other'}
                     renderIcon={() => <Icon name={ 'ios-more' } size={30} color={'gray'}/>}
                     renderSelectedIcon={() => <Icon name={ 'ios-more' } size={30} color={'#4E78E7'}/>}
-                    onPress={() => this.setState({ selectedTab: 'other' })}>
+                    onPress={() => this._changeTabbar('other')}>
                     <OtherContainer {...this.props}/>
                  </TabNavigator.Item>
             </TabNavigator>

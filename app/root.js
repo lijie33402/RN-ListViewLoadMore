@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react'
-import {Navigator} from 'react-native'
+import { Navigator } from 'react-native'
 import { Provider } from 'react-redux'
 import configureStore from './store/store.js'
 import App from './containers/app.js'
