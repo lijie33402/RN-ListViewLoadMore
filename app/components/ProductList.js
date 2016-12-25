@@ -9,7 +9,7 @@ import {
 	InteractionManager,
 	RefreshControl,
 } from 'react-native'
-import { request } from '../util/Http.js'
+
 import LoadMoreFooter from '../components/LoadMoreFooter.js'
 import ProductCell from '../components/ProductCell.js'
 import NavigationBar from '../common/NavBarCommon.js'
@@ -34,10 +34,10 @@ class ProductList extends Component {
 	componentDidMount() {
 		const {actions} = this.props;
 		actions.changeProductListRefreshing(true);
-		this.requestProductList(_pageNo);
+		this._requestProductList(_pageNo);
 	}
 
-	requestProductList = (pageNo) => {
+	_requestProductList = (pageNo) => {
 		const {actions} = this.props;
 		return HttpRequest(`${HOST}${keyWords}/${pageNo}.html?XPJAX=1`)
 			.then((responseData) => {
@@ -75,14 +75,14 @@ class ProductList extends Component {
 	_onRefresh = () => {
 		const {actions} = this.props;
 		actions.changeProductListRefreshing(true);
-		this.requestProductList(_pageNo);
+		this._requestProductList(_pageNo);
 	}
 
 	_loadMoreData = () => {
 		const { reducer, actions } = this.props;
 		actions.changeProductListLoadingMore(true);
 		_pageNo = Number.parseInt(reducer.products.length / _pageSize) + 1;
-		this.requestProductList(_pageNo);
+		this._requestProductList(_pageNo);
 	}
 
 	_toEnd = () => {
@@ -98,9 +98,6 @@ class ProductList extends Component {
 		});
 	}
 
-	_leftAction = () => {
-		console.log("点击leftnav ");
-	}
 
 	_renderFooter = () => {
 		const { reducer } = this.props;
@@ -121,7 +118,7 @@ class ProductList extends Component {
 		const { reducer, actions } = this.props;
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		return (
-			<View>
+			<View style={ styles.container }>
 				<NavigationBar title={'首页'}/>
 				<ListView style={ styles.listViewContent } 
 					dataSource={ ds.cloneWithRows(reducer.products) } 
@@ -135,24 +132,22 @@ class ProductList extends Component {
 							refreshing={ reducer.isRefreshing }
 							onRefresh={ this._onRefresh }
 							tintColor="gray"
-							colors={['#ff0000', '#00ff00', '#0000ff']}
-							progressBackgroundColor="gray"/>
-						}/>
+							title="客官别急，加紧为您加载中..."/>
+					}/>
 			</View>
 		)
 	}
-
-	
-
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
 	listViewContent: {
 		flex: 1,
 		paddingBottom: 20,
 		marginBottom: 0,
-		backgroundColor: '#FFEFDB',
-		height: height-64,
+		backgroundColor: '#FFEFDB'
 	}
 })
 

@@ -21,21 +21,19 @@ class ProductDetail extends Component {
 
 	constructor(props) {
 		super(props);
-		const { navigator,imageUrl } = this.props;
 		this.state = {
 			navOpacity: 0
 		}
 	}
 
-	_backToFront() {
-		console.log("-----  <<<<");
+	_backToFront = () => {
 		const { navigator } = this.props;
 		if(navigator) {
 			navigator.pop();
 		}
 	}
 
-	_scrollViewScroll(event) {
+	_scrollViewScroll = (event) => {
 		console.log("scrolling",event.nativeEvent.contentOffset.y);
 		const offsetY = event.nativeEvent.contentOffset.y;
 		if (offsetY > 5) {
@@ -55,9 +53,8 @@ class ProductDetail extends Component {
 
 		return (
 			<View style={ styles.mainView }>
-				
-				<ScrollView onScroll={ this._scrollViewScroll.bind(this) } scrollEventThrottle={15} style={ styles.mainScrollView }>
-					<Image style={ styles.image } source={{uri: `https:${this.props.rowData.imagePath.replace(/140x140/, `${2 * width}x${2 * width}`)}` }}/>
+				<ScrollView onScroll={ this._scrollViewScroll } scrollEventThrottle={15} style={ styles.mainScrollView }>
+					<Image style={ styles.image } source={{uri: `https:${this.props.rowData.imagePath}`}}/>
 					<View style={ [styles.infoView] }>
 						<Text style={ styles.textInfo }>{ `Product Name: \n ${this.props.rowData.productName}` }</Text>
 					</View>
@@ -75,19 +72,12 @@ class ProductDetail extends Component {
 					</View>
 				</ScrollView>
 				<Image style={ styles.backIcon } source={ backIcon }/>
-				<NavigationBar style={{opacity: this.state.navOpacity}} title={'图文详情'} leftImage={ backIcon } leftAction={ this._backToFront.bind(this) }/>
-				
+				<NavigationBar style={{opacity: this.state.navOpacity}} title={'图文详情'} leftImage={ backIcon } leftAction={ this._backToFront }/>			
 			</View>
 		)
 	}
 }
-// <View style={ [styles.navbarView, {opacity: this.state.navOpacity}] }>
-// 	<View style={{marginTop: Platform.OS === 'ios' ? 20 : 0, height: 44, justifyContent: 'center', alignItems: 'center'}}>
-// 		<Text style={{color: 'white', fontWeight:'bold', fontSize: 18}}>
-// 			详情
-// 		</Text>
-// 	</View>
-// </View>
+
 const styles = StyleSheet.create({
 	mainView: {
 		flex: 1,
@@ -96,12 +86,12 @@ const styles = StyleSheet.create({
 	mainScrollView: {
 		flex: 1,
 		position: 'absolute',
-		height,
+		height: height,
 		backgroundColor: '#FFEFDB',
 	},
 	image: {
 		height: width,
-		width,
+		width: width
 	},
 	infoView: {
 		flex: 1,
@@ -114,25 +104,14 @@ const styles = StyleSheet.create({
 		borderBottomWidth:1,
 		borderBottomColor: 'lightgray',
 	},
-	textInfo: {
-		// backgroundColor: '#cccccc'
-	},
-	navbarView: {
-		height: Platform.OS === 'ios' ? 64 : 44,
-		width,
-		top: 0,
-		left: 0,
-		opacity: 0,
-		backgroundColor: '#4ea5ff',
-	},
 	backIcon: {
 		position: 'absolute',
-		marginTop: 25,
-		marginLeft: 8,
-		width: 34,
-		height: 34,
+		left: 5,
+		top: 26,
+		width: 32,
+		height: 32,
 		backgroundColor: 'gray',
-		borderRadius: 18,
+		borderRadius: 16
 	}
 })
 

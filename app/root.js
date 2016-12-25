@@ -1,13 +1,13 @@
-'use strict';
-
-import React from 'react'
+import React, { 
+	Component 
+} from 'react'
 import { Navigator } from 'react-native'
 import { Provider } from 'react-redux'
 import configureStore from './store/store.js'
 import App from './containers/app.js'
 const store = configureStore();
 
-class Root extends React.Component {
+class Root extends Component {
 
 	constructor(props) {
 	  super(props);

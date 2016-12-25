@@ -20,8 +20,4 @@ class ProductImageContainer extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return state;
-}
-
-export default connect(mapStateToProps)(ProductImageContainer);
+export default ProductImageContainer;

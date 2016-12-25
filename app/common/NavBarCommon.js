@@ -14,53 +14,49 @@ class NavigationBar extends Component {
     }
 
     render() {
-        // leftTitle和leftImage 优先判断leftTitle (即 文本按钮和图片按钮优先显示文本按钮)
     	const { title, leftTitle, leftImage, leftAction, rightTitle, rightImage, rightAction } = this.props;
         return (
             <View style={[styles.barView, this.props.style]}>
-            	<View style={ styles.showView }>
-            		{
-            			(()=>{
-            				if (leftTitle) {
-            					return <TouchableOpacity style={styles.leftNav} onPress={ ()=>{leftAction()} }>
-	            						<View style={{alignItems: 'center'}}>
-	            							<Text style={styles.barButton}>{leftTitle}</Text>
-	            						</View>
-	            					</TouchableOpacity>
-            				} else if (leftImage) {
-            					return <TouchableOpacity style={styles.leftNav} onPress={ ()=>{leftAction()} }>
-	            						<View style={{alignItems: 'center'}}>
-	            							<Image source={ leftImage }/>
-	            						</View>
-	            					</TouchableOpacity>
-            				};
-            			})()
-            		}
-		            {
-		            	(()=>{
-		            		if (title) {
-								return <Text style={styles.title}>{title || ''}</Text>				
-		            		}
-		            	})()
-		            }
-		            {
-		            	(()=>{
-		            		if (rightTitle) {
-		            			return <TouchableOpacity style={styles.rightNav} onPress={ ()=>{rightAction()} }>
-			            				<View style={{alignItems: 'center'}}>
-			            					<Text style={styles.barButton}>{rightTitle}</Text>
-			            				</View>
-			            			</TouchableOpacity>
-		            		} else if (rightImage) {
-		            			return <TouchableOpacity style={styles.rightNav} onPress={ ()=>{rightAction()} }>
-						            	<View style={{alignItems: 'center'}}>
-						            		<Image source={ rightImage }/>
-						            	</View>
-						            </TouchableOpacity>
-		            		}
-		            	})()
-		            }
-		            
+            	<View style={ styles.showView }>   			
+                    <View  style={styles.leftNav}>
+                        { 
+                            (() => {
+                                if (leftTitle) {
+                                    return <TouchableOpacity onPress={ ()=>{leftAction()} }>
+                                                <Text style={styles.barButton}>{leftTitle}</Text>
+                                            </TouchableOpacity>
+                                } else if (leftImage) {
+                                    return <TouchableOpacity onPress={ ()=>{leftAction()} }>
+                                                <Image source={ leftImage }/>
+                                            </TouchableOpacity>
+                                }
+                            })()
+                        }			        
+                    </View>
+                    <View style={styles.centerNav}>
+                        {
+                           (() => {
+                                if (title) {
+                                    return <Text style={styles.title}>{title}</Text>
+                                }
+                            })()      
+                        }                               
+                    </View>
+                    <View  style={styles.rightNav}>
+                        { 
+                            (() => {
+                                if (rightTitle) {
+                                    return <TouchableOpacity onPress={ ()=>{rightAction()} }>
+                                                <Text style={styles.barButton}>{rightTitle}</Text>
+                                            </TouchableOpacity>
+                                } else if (rightImage) {
+                                    return <TouchableOpacity onPress={ ()=>{rightAction()} }>
+                                                <Image source={ rightImage }/>
+                                            </TouchableOpacity>
+                                }
+                            })()
+                        }                   
+                    </View>
 		        </View>
             </View>
         )
@@ -69,7 +65,7 @@ class NavigationBar extends Component {
 
 const styles = StyleSheet.create({
     barView: {
-        height: Platform.OS === 'android' ? 44 : 64,
+        height: 64,
         backgroundColor: '#4E78E7',
     },
     showView: {
@@ -77,30 +73,33 @@ const styles = StyleSheet.create({
     	alignItems: 'center',
     	justifyContent: 'center',
     	flexDirection: 'row',
-    	marginTop: Platform.OS === 'android' ? 0 : 20,
+    	marginTop: 20,
     	height: 44,
     },
-    title: {
-    	color: 'white',
-    	fontSize: 18.0,
-    },
     leftNav: {
-    	position: 'absolute',
-    	top: 8,
-    	bottom: 8,
-    	left: 8,
-    	justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        paddingLeft: 5
+    },
+    centerNav: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    title: {
+        color: 'white',
+        fontSize: 18
     },
     rightNav: {
-    	position: 'absolute',
-    	right: 8,
-    	top: 8,
-    	bottom: 8,
-    	justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        paddingRight: 5
     },
     barButton: {
         color: 'white'
-    },
+    }
 })
 
 

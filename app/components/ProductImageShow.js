@@ -24,23 +24,14 @@ class ProductImageShow extends Component {
 			navOpacity: 0
 		}
 	}
-	_backToFront() {
+	_backToFront = () => {
 		const { navigator } = this.props;
 		if(navigator) {
 			navigator.pop();
 		}
 	}
 
-	_toast() {
-		// showMessage('提示信息内容','显示时长1~5秒','位置['top','center','bottom']')
-		NativeModules.NativeToast.showMessage(
-			`提示信息\n可以控制显示的时间\nshowTime:[1~5]\n可以控制提示信息显示的位置\nposition:['top','center','bottom']`,
-			5,
-			'center'
-		)
-	}
-
-	_toAnotherDetail() {
+	_toAnotherDetail = () => {
 		const { navigator, rowData } = this.props;
 		if(navigator) {
 			navigator.push({
@@ -53,11 +44,11 @@ class ProductImageShow extends Component {
 	render() {
 		return (
 			<View style={ styles.mainView }>
-				<NavigationBar title={'图片详情'} leftImage={ backIcon } leftAction={ this._backToFront.bind(this) } rightTitle={'去看图文详情'} rightImage={ backIcon } rightAction={ this._toAnotherDetail.bind(this) } />
-				<TouchableOpacity onPress={ this._toAnotherDetail.bind(this) }>
-					<Image style={ styles.image } source={{uri: `https:${this.props.rowData.imagePath.replace(/140x140/, `${2 * width}x${2 * width}`)}` }}/>
+				<NavigationBar title={'图片详情'} leftImage={ backIcon } leftAction={ this._backToFront } rightTitle={'去看图文详情'} rightAction={ this._toAnotherDetail } />
+				<TouchableOpacity onPress={ this._toAnotherDetail }>
+					<Image style={ styles.image } source={{uri: `https:${this.props.rowData.imagePath}`}}/>
 				</TouchableOpacity>
-				<TouchableOpacity onPress={ this._toast.bind(this) }>
+				<TouchableOpacity onPress={ this._toAnotherDetail }>
 					<View style={ styles.bottomTitleView }>
 						<Text style={ styles.bottomTitle }>点击图片可以去图文详情页</Text>
 					</View>
@@ -75,7 +66,7 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		height: width,
-		width,
+		width: width
 	},
 	bottomTitleView: {
 		margin: 40,

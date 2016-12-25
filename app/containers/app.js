@@ -11,7 +11,7 @@ import TabNavigator from 'react-native-tab-navigator'
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { connect } from 'react-redux'
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as Actions from '../action/product.js';
 
 class App extends Component {
@@ -25,7 +25,7 @@ class App extends Component {
     render() {
         const { selectedTab } = this.props.reducer;
         return (
-            <TabNavigator tabBarStyle={{ backgroundColor:'white' }} style={{backgroundColor: 'white'}}>
+            <TabNavigator tabBarStyle={{ backgroundColor:'white' }} >
                 <TabNavigator.Item
                     title="主页"
                     selected={selectedTab === 'home'}
@@ -48,7 +48,7 @@ class App extends Component {
 } 
 
 function mapStateToProps(state) {
-    return state;
+    return { reducer: state.reducer };
 }
 
 function mapDispatchToProps(dispatch) {
