@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux';
 import * as Actions from '../action/product.js';
 
+import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view';
+
 class OtherContainer extends Component {
 
 	constructor(props) {
@@ -13,17 +15,22 @@ class OtherContainer extends Component {
 	}
 
 	render() {
-		return (
-			<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-				<Text>其他</Text>
-				<Text>其他</Text>
-			</View>			
+		return (	
+			<ScrollableTabView
+			    style={{marginTop: 20, }}
+		        renderTabBar={() => <DefaultTabBar />}
+		        tabBarUnderlineStyle={{ backgroundColor: '#4E78E7'}}
+				tabBarTextStyle={{fontSize: 18}}
+			>
+			    <Text tabLabel='讨论'>讨论区</Text>
+			    <Text tabLabel='服务'>服务区</Text>
+			</ScrollableTabView>
 		);
 	}
 }
 
 function mapStateToProps(state) {
-    return state;
+    return { reducer: state.reducer };
 }
 
 function mapDispatchToProps(dispatch) {
